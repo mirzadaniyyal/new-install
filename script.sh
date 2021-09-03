@@ -10,6 +10,7 @@ apt install -y apache2
 apt install -y gnupg
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.19-1_all.deb
 dpkg -i mysql-apt-config_0.8.19-1_all.deb
+apt install -y mysql-server
 systemctl status mysql.service
 
 #....................install php 7 on debian.............
