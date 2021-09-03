@@ -21,9 +21,16 @@ apt install -y php7.4 php7.4-mysql php7.4-mbstring php7.4-xml php7.4-bcmath php7
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 chmod +x /usr/local/bin/composer
-git clone https://github.com/laravel/laravel.git
-cd /var/www/laravel
-composer install
-chown -R www-data.www-data /var/www/laravel
-chmod -R 755 /var/www/laravel
-chmod -R 777 /var/www/laravel/storage
+
+cd /var/www/
+composer create-project --prefer-dist laravel/laravel my_app
+
+chown -R www-data.www-data /var/www/mu_app
+chmod -R 755 /var/www/my_app
+chmod -R 777 /var/www/my_app/storage
+
+#....................test laravel installation............. 
+php artisan serve
+
+#output should be 
+#Laravel development server started: <http://127.0.0.1:8000>
