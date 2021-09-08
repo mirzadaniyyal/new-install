@@ -1,5 +1,11 @@
 #!/bin/bash
+
+export APPNAME=myapp
+export APPFQDN=$APPNAME.com
+
 apt update
+apt upgrade -y
+
 apt install apache2
 systemctl start apache2
 apt install libapache2-mod-php php php-common php-xml php-gd php-opcache php-mbstring php-tokenizer php-json php-bcmath php-zip unzip
@@ -10,22 +16,25 @@ systemctl restart apache2
 apt install curl
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
+composer -V
 composer global require laravel/installer
-nano ~/.bashrc
+
+echo "export PATH='$HOME/.config/composer/vendor/bin:$PATH'" >> ~/.bashrc
+
 source ~/.bashrc
-echo $PATH
-laravel new myapp1
-chgrp -R www-data /home/techblog/myapp1
-chmod -R 775 /home/techblog/myapp1/storage
+
+laravel new /home/techblog/$APPNAME
+chgrp -R www-data /home/techblog/$APPNAME
+chmod -R 775 /home/techblog/$APPNAME/storage
 cd /etc/apache2/sites-available/
-nano myapp1.com.conf
+
+cat << EOF > $APPFQDN.conf
 <VirtualHost *:80>
-    ServerName myapp1.com
+    ServerName $APPFQDN.com
+    ServerAdmin admin@$APPFQDN
+    DocumentRoot /home/techblog/$APPNAME/public
 
-    ServerAdmin admin@myapp1.com
-    DocumentRoot root/myapp1/public
-
-    <Directory /root/myapp1>
+    <Directory /home/techblog/$APPNAME/public>
         Options Indexes MultiViews
         AllowOverride None
         Require all granted
@@ -34,15 +43,8 @@ nano myapp1.com.conf
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+EOF
 
-#All Red colored text must be changed as per your//
-a2enmod rewrite.
-a2ensite myapp1.com.conf.
+a2enmod rewrite
+a2ensite $APPFQDN.conf
 systemctl restart apache2
-nano /etc/hosts 
-127.0.0.1   myapp1.com
-
-
-
-
-
