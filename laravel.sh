@@ -35,16 +35,16 @@ cat << EOF > /etc/apache2/sites-available/$APPFQDN.conf
 <VirtualHost *:80>
     ServerName $APPFQDN.com
     ServerAdmin admin@$APPFQDN
-    DocumentRoot /home/techblog/$APPNAME/public
+    DocumentRoot /home/techblog/$APPNAME/public/
 
-    <Directory /home/techblog/$APPNAME/public>
+    <Directory /home/techblog/$APPNAME/public/>
         Options Indexes MultiViews
         AllowOverride None
         Require all granted
     </Directory>
 
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    ErrorLog \${APACHE_LOG_DIR}/error.log
+    CustomLog \${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 EOF
 
