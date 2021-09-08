@@ -18,7 +18,7 @@ systemctl restart apache2
 
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
-composer global require laravel/installer
+composer -n global require laravel/installer
 
 echo "export PATH='$HOME/.config/composer/vendor/bin:$PATH'" >> ~/.bashrc
 
@@ -26,7 +26,7 @@ source ~/.bashrc
 
 cd /home/techblog
 
-laravel new $APPNAME
+composer -n create-project laravel/laravel $APPNAME
 
 chgrp -R www-data /home/techblog/$APPNAME/storage /home/techblog/$APPNAME/bootstrap/cache
 chmod -R ug+rwx /home/techblog/$APPNAME/storage /home/techblog/$APPNAME/bootstrap/cache
